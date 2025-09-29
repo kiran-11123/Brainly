@@ -1,22 +1,18 @@
 import express from 'express'
 import ConnectDB from './db';
+import cors from 'cors';
+import cookieParser from 'cookie-parser'
 const app = express();
 ConnectDB();
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 
 
 
-
-app.post("/api/v1/signin" , (req,res)=>{
-
-})
-
-app.post("/api/v1/signup" ,(req,res)=>{
-
-})
-
-app.get("api/v1/content" ,(req,res)=>{
-
-})
 app.post("/api/v1/brain/share" ,(req,res)=>{
 
 })

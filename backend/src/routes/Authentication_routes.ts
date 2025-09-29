@@ -22,7 +22,7 @@ if(!JWT_SECRET_KEY){
 
 
 
-Auth_Router.post("/api/v1/signin" , async(req,res)=>{
+Auth_Router.post("/signin" , async(req,res)=>{
 
 
     try{
@@ -52,6 +52,13 @@ Auth_Router.post("/api/v1/signin" , async(req,res)=>{
         const user_details = {"user_id" : user_check._id , "username" : user_check.username , "email" :user_check.email};
 
         const token = jwt.sign(user_details , JWT_SECRET_KEY ,  {expiresIn :"1h"});
+        
+         res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 3600000
+        });
 
         return res.status(200).json({
             ok:true,
@@ -73,7 +80,7 @@ Auth_Router.post("/api/v1/signin" , async(req,res)=>{
 
 
 
-Auth_Router.post("/api/v1/signup" , async(req,res)=>{
+Auth_Router.post("/signup" , async(req,res)=>{
        
     try{
         
