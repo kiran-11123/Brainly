@@ -8,7 +8,7 @@ import { es } from "zod/v4/locales";
 const Auth_Router = express.Router();
 import dotenv from 'dotenv';
 dotenv.config();
-const JWT_SECRET_KEY = process.env.JWT_SECRET || undefined;
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || undefined;
 
 if(!JWT_SECRET_KEY){
     console.log("FATAL ERROR: JWT_SECRET is not defined.");

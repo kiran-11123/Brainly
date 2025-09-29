@@ -2,6 +2,8 @@ import express from 'express'
 import ConnectDB from './db';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'
+import Contents_Router from './routes/Contents';
+import Auth_Router from './routes/Authentication_routes';
 const app = express();
 ConnectDB();
 app.use(express.json());
@@ -12,10 +14,8 @@ app.use(cors({
 }));
 
 
-
-app.post("/api/v1/brain/share" ,(req,res)=>{
-
-})
+app.use("/api/v1/users",Auth_Router);
+app.use("/api/v1/data" , Contents_Router);
 
 
 

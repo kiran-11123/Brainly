@@ -6,7 +6,7 @@ const Content_Schema = new mongoose.Schema({
     title:{type:String},
     link:{type:String},
     tags:[{type:mongoose.Types.ObjectId , ref:'Tag'}],
-    userId :{type:mongoose.Types.ObjectId , ref:'Users'}
+    userId :{type:mongoose.Types.ObjectId , ref:'Users' ,required:true}
 
 })
 

@@ -20,12 +20,12 @@ const zod_1 = __importDefault(require("zod"));
 const Auth_Router = express_1.default.Router();
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const JWT_SECRET_KEY = process.env.JWT_SECRET || undefined;
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || undefined;
 if (!JWT_SECRET_KEY) {
     console.log("FATAL ERROR: JWT_SECRET is not defined.");
     process.exit(1);
 }
-Auth_Router.post("/api/v1/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Auth_Router.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -45,6 +45,12 @@ Auth_Router.post("/api/v1/signin", (req, res) => __awaiter(void 0, void 0, void 
         }
         const user_details = { "user_id": user_check._id, "username": user_check.username, "email": user_check.email };
         const token = jsonwebtoken_1.default.sign(user_details, JWT_SECRET_KEY, { expiresIn: "1h" });
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 3600000
+        });
         return res.status(200).json({
             ok: true,
             message: "User Logged In Successfully..",
@@ -58,7 +64,7 @@ Auth_Router.post("/api/v1/signin", (req, res) => __awaiter(void 0, void 0, void 
         });
     }
 }));
-Auth_Router.post("/api/v1/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Auth_Router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const email = req.body.email;
         const username = req.body.username;
