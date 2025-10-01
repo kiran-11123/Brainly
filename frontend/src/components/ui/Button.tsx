@@ -23,7 +23,7 @@ export const Button =(props:ButtonProps)=>{
     const VariantClass : Record<string,string> ={
 
         primary : "bg-blue-600 text-white hover:bg-700",
-        secondary :"bg-blue-100 text-blue-600 hover:bg-gray-300" 
+        secondary :"bg-blue-200 text-gray-800 hover:bg-gray-300" 
 
     }
 
