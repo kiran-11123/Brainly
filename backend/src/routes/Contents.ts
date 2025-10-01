@@ -76,4 +76,35 @@ Contents_Router.post("/content" , Auth_Middleware , async(req,res)=>{
 
 })
 
+Contents_Router.delete("/delete_content" , async(req,res)=>{
+       
+    try{
+
+        const content_id = req.body.contentId;
+
+        await Contents.deleteMany({
+            content_id,
+            //@ts-ignore
+            userId:req.user.user_id
+
+        })
+
+        return res.status(200).json({
+            message:"Content Deleted Successfully..",
+            ok:true
+        })
+
+
+
+    }
+    catch(er){
+         
+        return res.status(500).json({
+            message:"Internal Server Error..",
+            error:er,
+            ok:false
+        })
+    }
+})
+
 export default Contents_Router;
