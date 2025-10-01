@@ -2,6 +2,7 @@
 import './App.css'
 import { Button } from './components/ui/Button'
 import { PlusIcon } from './icons/PlusIcon'
+import { ShareIcon } from './icons/ShareIcon'
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
 
             <Button 
          variant="secondary" 
-         startIcon="*"
+         startIcon={<ShareIcon  size={"md"} /> }
         text="Share " 
         size="md" 
         onClick={() => alert("Button clicked!")} 
