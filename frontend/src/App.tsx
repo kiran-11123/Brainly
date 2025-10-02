@@ -3,6 +3,7 @@ import './App.css'
 import { Button } from './components/Button'
 import { PlusIcon } from './icons/PlusIcon'
 import { ShareIcon } from './icons/ShareIcon'
+import Card from './components/Card'
 
 function App() {
 
@@ -28,6 +29,8 @@ function App() {
         size="md" 
         onClick={() => alert("Button clicked!")} 
         />
+
+        <Card />
           
     </div>
 
