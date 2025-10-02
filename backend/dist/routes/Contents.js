@@ -16,6 +16,8 @@ const express_1 = __importDefault(require("express"));
 const contents_1 = __importDefault(require("../Database_Schema/contents"));
 const Contents_Router = express_1.default.Router();
 const Auth_middleware_1 = require("../middlewares/Auth_middleware");
+const Links_1 = __importDefault(require("../Database_Schema/Links"));
+const utils_1 = require("./utils");
 Contents_Router.get("/content", Auth_middleware_1.Auth_Middleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
@@ -64,6 +66,56 @@ Contents_Router.post("/content", Auth_middleware_1.Auth_Middleware, (req, res) =
     catch (er) {
         return res.status(500).json({
             message: "Internal Server Error",
+            error: er
+        });
+    }
+}));
+Contents_Router.delete("/delete_content", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const content_id = req.body.contentId;
+        yield contents_1.default.deleteMany({
+            content_id,
+            //@ts-ignore
+            userId: req.user.user_id
+        });
+        return res.status(200).json({
+            message: "Content Deleted Successfully..",
+            ok: true
+        });
+    }
+    catch (er) {
+        return res.status(500).json({
+            message: "Internal Server Error..",
+            error: er,
+            ok: false
+        });
+    }
+}));
+Contents_Router.post("/share", Auth_middleware_1.Auth_Middleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        //@ts-ignore
+        const userId = req.user.user_id;
+        const share = req.body.share;
+        if (share) {
+            yield Links_1.default.create({
+                userID: userId,
+                hash: (0, utils_1.random)(10)
+            });
+        }
+        else {
+            yield Links_1.default.deleteOne({
+                //@ts-ignore
+                userId: req.user.user_id
+            });
+        }
+        return res.status(200).json({
+            message: "Updated Sharable Link"
+        });
+    }
+    catch (er) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            ok: false,
             error: er
         });
     }

@@ -2,8 +2,8 @@ import express from 'express'
 import Contents from '../Database_Schema/contents'
 const Contents_Router = express.Router();
 import { Auth_Middleware } from '../middlewares/Auth_middleware';
-
-
+import Links from '../Database_Schema/Links';
+import { random } from './utils';
 Contents_Router.get("/content" , Auth_Middleware , async(req,res)=>{
         
     try{
@@ -104,6 +104,48 @@ Contents_Router.delete("/delete_content" , async(req,res)=>{
             error:er,
             ok:false
         })
+    }
+})
+
+Contents_Router.post("/share"  , Auth_Middleware,async(req,res)=>{
+      
+    try{
+        
+         //@ts-ignore
+        const userId = req.user.user_id;
+
+        const share = req.body.share;
+
+        if(share){
+             await Links.create({
+                userID:userId,
+                hash :random(10)
+             })
+        }
+        else{
+             
+            await Links.deleteOne({
+                //@ts-ignore
+
+                userId:req.user.user_id
+            })
+        }
+
+        return res.status(200).json({
+             message : "Updated Sharable Link"
+        })
+
+
+
+    }
+    catch(er){
+
+        return res.status(500).json({
+             message:"Internal Server Error",
+             ok:false,
+             error:er
+        })
+         
     }
 })
 
