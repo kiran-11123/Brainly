@@ -4,6 +4,8 @@ const Contents_Router = express.Router();
 import { Auth_Middleware } from '../middlewares/Auth_middleware';
 import Links from '../Database_Schema/Links';
 import { random } from './utils';
+import { appendFile, link } from 'fs';
+import Users from '../Database_Schema/Users';
 Contents_Router.get("/content" , Auth_Middleware , async(req,res)=>{
         
     try{
@@ -117,10 +119,28 @@ Contents_Router.post("/share"  , Auth_Middleware,async(req,res)=>{
         const share = req.body.share;
 
         if(share){
+            
+             //@ts-ignore
+            const existing_link = await Links.findOne({userId : req.user.userId});
+            
+            if(existing_link){
+                 return res.json({
+                    message:"Link Already Generated",
+                    link : existing_link.hash
+                 })
+            }
+            const hash = random(10);
              await Links.create({
                 userID:userId,
-                hash :random(10)
+                hash :hash
              })
+
+               return res.status(200).json({
+             message : "Updated Sharable Link",
+             link : "/share" + hash
+
+             
+        })
         }
         else{
              
@@ -129,11 +149,13 @@ Contents_Router.post("/share"  , Auth_Middleware,async(req,res)=>{
 
                 userId:req.user.user_id
             })
+
+              return res.status(200).json({
+             message : "Removed Sharable Link"
+        })
         }
 
-        return res.status(200).json({
-             message : "Updated Sharable Link"
-        })
+      
 
 
 
@@ -146,6 +168,45 @@ Contents_Router.post("/share"  , Auth_Middleware,async(req,res)=>{
              error:er
         })
          
+    }
+})
+
+Contents_Router.get("/:shareLink" , async(req,res)=>{
+     
+    try{
+
+        const hash = req.params.shareLink;
+
+       const Link =  await Links.findOne({
+            hash:hash
+        })
+
+        if(!Link){
+             return res.status(411).json({
+                message:"Sorry incorrect input.."
+             })
+        }
+
+        const content = await Contents.find({
+            userId:Link.userId
+        })
+
+        const user = await Users.find({
+            _id : Link.userId
+        })
+
+        return res.status(200).json({
+            username:user,
+            content:content 
+        })
+
+    }
+    catch(er){
+        return res.status(500).json({
+             message:"Internal Server Error",
+             ok:false,
+             error:er
+        })
     }
 })
 
