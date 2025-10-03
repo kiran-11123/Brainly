@@ -4,8 +4,13 @@ import { Button } from './components/Button'
 import { PlusIcon } from './icons/PlusIcon'
 import { ShareIcon } from './icons/ShareIcon'
 import Card from './components/Card'
+import { useState } from 'react'
+import CreateContentModel from './components/CreateContentModel'
+import { useSearchParams } from 'react-router-dom'
 
 function App() {
+
+  const[modelOpen , setOpenModel] = useState(false);
 
 
   return (
@@ -13,6 +18,9 @@ function App() {
 
       <div className='p-4'>
 
+      <CreateContentModel open={modelOpen} Onclose={()=>{
+        setOpenModel(false)
+      }}  />
 
    <div className='flex justify-end  gap-4'>
 
@@ -23,7 +31,7 @@ function App() {
          startIcon={<ShareIcon  size={"md"} /> }
         text="Share Brain" 
         size="md" 
-        onClick={() => alert("Button clicked!")} 
+        //onClick={() => setOpenModel(true)} 
         />
 
            <Button 
@@ -31,7 +39,7 @@ function App() {
          startIcon= {<PlusIcon  size={"md"}/>}
         text="Add content " 
         size="md" 
-        onClick={() => alert("Button clicked!")} 
+        onClick={() => setOpenModel(true)} 
         />
       </div>
 
