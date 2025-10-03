@@ -18,6 +18,7 @@ const Contents_Router = express_1.default.Router();
 const Auth_middleware_1 = require("../middlewares/Auth_middleware");
 const Links_1 = __importDefault(require("../Database_Schema/Links"));
 const utils_1 = require("./utils");
+const Users_1 = __importDefault(require("../Database_Schema/Users"));
 Contents_Router.get("/content", Auth_middleware_1.Auth_Middleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
@@ -97,9 +98,22 @@ Contents_Router.post("/share", Auth_middleware_1.Auth_Middleware, (req, res) => 
         const userId = req.user.user_id;
         const share = req.body.share;
         if (share) {
+            //@ts-ignore
+            const existing_link = yield Links_1.default.findOne({ userId: req.user.userId });
+            if (existing_link) {
+                return res.json({
+                    message: "Link Already Generated",
+                    link: existing_link.hash
+                });
+            }
+            const hash = (0, utils_1.random)(10);
             yield Links_1.default.create({
                 userID: userId,
-                hash: (0, utils_1.random)(10)
+                hash: hash
+            });
+            return res.status(200).json({
+                message: "Updated Sharable Link",
+                link: "/share" + hash
             });
         }
         else {
@@ -107,9 +121,39 @@ Contents_Router.post("/share", Auth_middleware_1.Auth_Middleware, (req, res) => 
                 //@ts-ignore
                 userId: req.user.user_id
             });
+            return res.status(200).json({
+                message: "Removed Sharable Link"
+            });
         }
+    }
+    catch (er) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            ok: false,
+            error: er
+        });
+    }
+}));
+Contents_Router.get("/:shareLink", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const hash = req.params.shareLink;
+        const Link = yield Links_1.default.findOne({
+            hash: hash
+        });
+        if (!Link) {
+            return res.status(411).json({
+                message: "Sorry incorrect input.."
+            });
+        }
+        const content = yield contents_1.default.find({
+            userId: Link.userId
+        });
+        const user = yield Users_1.default.find({
+            _id: Link.userId
+        });
         return res.status(200).json({
-            message: "Updated Sharable Link"
+            username: user,
+            content: content
         });
     }
     catch (er) {
