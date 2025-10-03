@@ -11,7 +11,11 @@ function App() {
   return (
 
 
-      <div>
+      <div className='p-4'>
+
+
+   <div className='flex justify-end  gap-4'>
+
 
 
       <Button 
@@ -29,10 +33,18 @@ function App() {
         size="md" 
         onClick={() => alert("Button clicked!")} 
         />
+      </div>
 
-        <Card />
+          <div className='flex  gap-4 '>
+            
+            
+        <Card type="twitter" link="https://x.com/kirat_tw/status/1633685473821425666" title="First Tweet"/>    
+         </div>
+        
           
     </div>
+
+
 
  
     

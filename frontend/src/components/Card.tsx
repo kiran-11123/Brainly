@@ -1,5 +1,5 @@
 import { ShareIcon } from "../icons/ShareIcon";
-import {Tweet} from 'react-tweet'
+
 interface CardProps{
     title:string,
     link:string,
@@ -11,7 +11,7 @@ export default function Card({title , link ,type} :CardProps){
 
     return(
         <div className="bg-white p-4 border border-gray-200
-         max-w-72  rounded-md  outline-slate-200">
+         max-w-72 min-h-48  rounded-md  outline-slate-200">
              
             <div className="flex items-center justify-between">
 
@@ -51,19 +51,19 @@ export default function Card({title , link ,type} :CardProps){
             <div className="pt-4">
 
                 {type==="youtube" &&  <iframe className="w-full"
-                 src="https://www.youtube.com/embed/K3nRKezdDIM?si=bsmOIbV7R4VNzuCz" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen>
+                 src={link.replace("watch" ,"embed").replace("?v=" , "/")} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen>
                 </iframe>   }
 
-                <div className="dark">
-        <Tweet id="1680555380416577536"/>
-      </div>
-                
+              {type==="twitter" &&  <blockquote className="twitter-tweet">
+                    <a href  ={link.replace("x.com" , "twitter.com")} ></a>
+                </blockquote>}  
+  
+
             </div>
-          
 
 
-        </div>
-    )
+        </div>  
+    ) 
 
 
 
