@@ -102,6 +102,8 @@ Auth_Router.post("/signup" , async(req,res)=>{
        const validation_check = zod_validation.safeParse({email,username,password});
        
        if(!validation_check.success){
+        console.log(validation_check.error);
+
              
         return res.status(411).json({
             ok:false,
