@@ -6,7 +6,7 @@ import { ShareIcon } from './icons/ShareIcon'
 import Card from './components/Card'
 import { useState } from 'react'
 import CreateContentModel from './components/CreateContentModel'
-import { useSearchParams } from 'react-router-dom'
+
 import Sidebar from './components/Sidebar'
 function App() {
 
