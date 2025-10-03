@@ -7,7 +7,7 @@ import Card from './components/Card'
 import { useState } from 'react'
 import CreateContentModel from './components/CreateContentModel'
 import { useSearchParams } from 'react-router-dom'
-
+import Sidebar from './components/Sidebar'
 function App() {
 
   const[modelOpen , setOpenModel] = useState(false);
@@ -16,7 +16,13 @@ function App() {
   return (
 
 
-      <div className='p-4'>
+      <div  className='flex'>
+
+        <Sidebar />
+
+        <div className='p-4 flex-1'> 
+
+      
 
       <CreateContentModel open={modelOpen} Onclose={()=>{
         setOpenModel(false)
@@ -50,6 +56,10 @@ function App() {
          </div>
         
           
+    </div>
+
+
+
     </div>
 
 
