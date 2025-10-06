@@ -73,11 +73,12 @@ Auth_Router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, func
         const zod_validation = zod_1.default.object({
             email: zod_1.default.string().email({ message: "Invalid Email Address" }),
             username: zod_1.default.string().min(3, { message: "Username must be at least 3 Characters" }),
-            password: zod_1.default.string().min(8, { message: "Password must be at least 8 characters long" }).regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+            password: zod_1.default.string().min(5, { message: "Password must be at least 8 characters long" }).regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
                 .regex(/[^A-Za-z0-9]/, { message: "Password must contain at least one special character" })
         });
         const validation_check = zod_validation.safeParse({ email, username, password });
         if (!validation_check.success) {
+            console.log(validation_check);
             return res.status(411).json({
                 ok: false,
                 errors: validation_check.error.format(),

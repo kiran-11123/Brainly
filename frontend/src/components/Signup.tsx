@@ -48,18 +48,8 @@ const Signup = () => {
 
     }
     catch(er){
-         if (typeof er === "object" && er !== null && "response" in er) {
-                const error = er as any;
-                if (error.response && error.response.data && error.response.data.message) {
-                    setMessage(error.response.data.message);
-                } else {
-                    setMessage('error in login');
-                }
-            } else {
-                setMessage('error in login');
-            }
-
-
+            console.log(er);
+            setMessage('Error in registration');
             setTimeout(() => {
                 setMessage('')
                 setEmail('')
@@ -112,7 +102,7 @@ const Signup = () => {
 
 
 
-                    <button className="text-center font-bold text-lg sm:xl  w-full rounded-lg bg-blue-500 text-white mb-5 px-3 py-2">
+                    <button className="text-center font-bold text-lg sm:xl  w-full rounded-lg bg-blue-500 text-white mb-5 px-3 py-2 cursor-pointer">
                         Register
                     </button>
 

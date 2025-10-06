@@ -94,7 +94,7 @@ Auth_Router.post("/signup" , async(req,res)=>{
        const zod_validation = zod.object({
         email : zod.string().email({message:"Invalid Email Address"}),
         username:zod.string().min(3 , {message:"Username must be at least 3 Characters"}),
-        password :zod.string().min(8 ,{message:"Password must be at least 8 characters long"}).regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+        password :zod.string().min(5 ,{message:"Password must be at least 8 characters long"}).regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
          .regex(/[^A-Za-z0-9]/, { message: "Password must contain at least one special character" })
        });
 
@@ -102,7 +102,7 @@ Auth_Router.post("/signup" , async(req,res)=>{
        const validation_check = zod_validation.safeParse({email,username,password});
        
        if(!validation_check.success){
-        console.log(validation_check.error);
+        console.log(validation_check);
 
              
         return res.status(411).json({
