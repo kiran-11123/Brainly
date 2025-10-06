@@ -89,7 +89,7 @@ Auth_Router.post("/signup" , async(req,res)=>{
         const password = req.body.password;
 
 
-        //zod validation 
+      /*  //zod validation 
 
        const zod_validation = zod.object({
         email : zod.string().email({message:"Invalid Email Address"}),
@@ -111,7 +111,7 @@ Auth_Router.post("/signup" , async(req,res)=>{
             message:validation_check.error
         });
        }
-
+    */
        const username_check = await Users.findOne({username : username});
 
        if(username_check){

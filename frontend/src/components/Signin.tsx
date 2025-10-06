@@ -24,9 +24,9 @@ export default function Signin() {
                 withCredentials: true
             });
 
-            console.log(response)
+    
 
-            if (response.status === 200) {
+            if (response.status === 200 && response.data.ok) {
                 setMessage(response.data.message);
 
                 setTimeout(() => {
@@ -49,7 +49,7 @@ export default function Signin() {
                 if (error.response && error.response.data && error.response.data.message) {
                     setMessage(error.response.data.message);
                 } else {
-                    console.log(er);
+                    console.log("this is error " , er);
                     setMessage('error in login');
                 }
             } else {

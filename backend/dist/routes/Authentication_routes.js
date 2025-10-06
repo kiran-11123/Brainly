@@ -16,7 +16,6 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const express_1 = __importDefault(require("express"));
 const Users_1 = __importDefault(require("../Database_Schema/Users"));
-const zod_1 = __importDefault(require("zod"));
 const Auth_Router = express_1.default.Router();
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -69,22 +68,29 @@ Auth_Router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, func
         const email = req.body.email;
         const username = req.body.username;
         const password = req.body.password;
-        //zod validation 
-        const zod_validation = zod_1.default.object({
-            email: zod_1.default.string().email({ message: "Invalid Email Address" }),
-            username: zod_1.default.string().min(3, { message: "Username must be at least 3 Characters" }),
-            password: zod_1.default.string().min(5, { message: "Password must be at least 8 characters long" }).regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-                .regex(/[^A-Za-z0-9]/, { message: "Password must contain at least one special character" })
-        });
-        const validation_check = zod_validation.safeParse({ email, username, password });
-        if (!validation_check.success) {
-            console.log(validation_check);
-            return res.status(411).json({
-                ok: false,
-                errors: validation_check.error.format(),
-                message: validation_check.error
-            });
-        }
+        /*  //zod validation
+  
+         const zod_validation = zod.object({
+          email : zod.string().email({message:"Invalid Email Address"}),
+          username:zod.string().min(3 , {message:"Username must be at least 3 Characters"}),
+          password :zod.string().min(5 ,{message:"Password must be at least 8 characters long"}).regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+           .regex(/[^A-Za-z0-9]/, { message: "Password must contain at least one special character" })
+         });
+  
+  
+         const validation_check = zod_validation.safeParse({email,username,password});
+         
+         if(!validation_check.success){
+          console.log(validation_check);
+  
+               
+          return res.status(411).json({
+              ok:false,
+              errors:validation_check.error.format(),
+              message:validation_check.error
+          });
+         }
+      */
         const username_check = yield Users_1.default.findOne({ username: username });
         if (username_check) {
             return res.status(411).json({

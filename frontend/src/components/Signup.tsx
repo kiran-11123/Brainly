@@ -19,17 +19,17 @@ const Signup = () => {
 
     try{
 
+        console.log(email , username , Password);
+
         const response = await axios.post("http://localhost:3000/api/v1/users/signup", {
                 email: email,
                 username: username,
                 password: Password,
-            }, {
-                withCredentials: true
             });
 
-            console.log(response)
+        console.log(response)
 
-            if (response.status === 200) {
+            if (response.status === 200 && response.data.ok) {
                 setMessage('User Registered  successful');
 
 
