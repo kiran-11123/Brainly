@@ -8,7 +8,7 @@ export default function Signin() {
 
     const [message, setMessage] = useState('');
     const [email, setEmail] = useState('');
-    const [Password, setPassword] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
 
@@ -17,16 +17,16 @@ export default function Signin() {
         e.preventDefault()
 
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/users/signin", {
+            const response = await axios.post("http://localhost:5000/api/v1/users/signin", {
                 email: email,
-                password: Password
+                password: password
             }, {
                 withCredentials: true
             });
 
     
 
-            if (response.status === 200 && response.data.ok) {
+            if (response.status === 200 ) {
                 setMessage(response.data.message);
 
                 setTimeout(() => {
@@ -44,17 +44,24 @@ export default function Signin() {
         }
 
         catch (er) {
-            if (typeof er === "object" && er !== null && "response" in er) {
-                const error = er as any;
-                if (error.response && error.response.data && error.response.data.message) {
-                    setMessage(error.response.data.message);
-                } else {
-                    console.log("this is error " , er);
-                    setMessage('error in login');
-                }
-            } else {
-                setMessage('error in login');
-            }
+           let errorMessage = "An unexpected error occurred."; // Default message
+
+    // 1. Check if it is an Axios error and if it has a response
+    if (axios.isAxiosError(er) && er.response) {
+        // 2. The server sends the specific message in er.response.data.message
+        if (er.response.data && er.response.data.message) {
+            errorMessage = er.response.data.message;
+        } else if (er.response.status === 400) {
+            // Fallback for generic 400 if the message field is missing
+            errorMessage = "Login failed. Check your email and password.";
+        }
+    }
+    
+    // Set the state to display the specific message
+    setMessage(errorMessage); 
+    
+    // Log the full error for detailed debugging in the console
+    console.error("Login Error Details:", er);
 
 
             setTimeout(() => {
@@ -88,7 +95,7 @@ export default function Signin() {
                             Password
                         </label>
 
-                        <input required onChange={(e) => setPassword(e.target.value)} value={Password} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter your Password" type="Password" />
+                        <input required onChange={(e) => setPassword(e.target.value)} value={password} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter your Password" type="Password" />
                     </div>
 
 

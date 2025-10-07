@@ -3,8 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import express from 'express';
 import Users from "../Database_Schema/Users";
-import zod, { hash, minLength } from 'zod';
-import { es } from "zod/v4/locales";
+
 const Auth_Router = express.Router();
 import dotenv from 'dotenv';
 dotenv.config();
@@ -33,8 +32,8 @@ Auth_Router.post("/signin" , async(req,res)=>{
         const user_check = await Users.findOne({email:email});
         
         if(!user_check){
-             return res.status(411).json({
-                ok:false,
+             return res.status(400).json({
+              
                 message:"Email not found. Please Register..."
              })
         }
@@ -42,8 +41,8 @@ Auth_Router.post("/signin" , async(req,res)=>{
         const Password_check = await bcrypt.compare(password , user_check.password);
 
         if(!Password_check){
-            return res.status(411).json({
-                ok:false,
+            return res.status(400).json({
+              
                 message:"Password is Wrong.."
             })
         }
@@ -61,7 +60,7 @@ Auth_Router.post("/signin" , async(req,res)=>{
         });
 
         return res.status(200).json({
-            ok:true,
+        
             message:"User Logged In Successfully..",
             token:token
         })
@@ -115,14 +114,14 @@ Auth_Router.post("/signup" , async(req,res)=>{
        const username_check = await Users.findOne({username : username});
 
        if(username_check){
-            return res.status(411).json({
-                ok:false,
+            return res.status(400).json({
+             
                 message:"Username Already taken..."
             })
        }
 
 
-       const hashed_password = await bcrypt.hash(password,20);
+       const hashed_password = await bcrypt.hash(password,10);
 
 
 

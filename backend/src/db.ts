@@ -4,8 +4,10 @@ const ConnectDB =async ()=>{
      
 
     try{
-        await mongoose.connect("mongodb://localhost:27017/Brainly")
-
+        await mongoose.connect("mongodb://localhost:27017/Brainly",{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        } as mongoose.ConnectOptions);
         console.log("Database Connected")
     }
 

@@ -2,6 +2,7 @@
 import { Button } from './Button'
 import { PlusIcon } from '../icons/PlusIcon'
 import { ShareIcon } from 'lucide-react'
+import { ShareIcon_1 } from '../icons/ShareIcon_1'
 import Card from './Card'
 import { useState } from 'react'
 import CreateContentModel from './CreateContentModel'
@@ -33,7 +34,7 @@ export default function Home() {
 
       <Button 
          variant="secondary" 
-         startIcon={<ShareIcon  size={"md"} /> }
+         startIcon={<ShareIcon_1  size={"md"} /> }
         text="Share Brain" 
         size="md" 
         //onClick={() => setOpenModel(true)} 

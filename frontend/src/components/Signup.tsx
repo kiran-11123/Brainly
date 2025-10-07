@@ -29,7 +29,7 @@ const Signup = () => {
 
         console.log(response)
 
-            if (response.status === 200 && response.data.ok) {
+            if (response.status === 200 ) {
                 setMessage('User Registered  successful');
 
 

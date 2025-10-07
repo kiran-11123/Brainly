@@ -30,15 +30,13 @@ Auth_Router.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, func
         const password = req.body.password;
         const user_check = yield Users_1.default.findOne({ email: email });
         if (!user_check) {
-            return res.status(411).json({
-                ok: false,
+            return res.status(400).json({
                 message: "Email not found. Please Register..."
             });
         }
         const Password_check = yield bcryptjs_1.default.compare(password, user_check.password);
         if (!Password_check) {
-            return res.status(411).json({
-                ok: false,
+            return res.status(400).json({
                 message: "Password is Wrong.."
             });
         }
@@ -51,7 +49,6 @@ Auth_Router.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, func
             maxAge: 3600000
         });
         return res.status(200).json({
-            ok: true,
             message: "User Logged In Successfully..",
             token: token
         });
@@ -93,12 +90,11 @@ Auth_Router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, func
       */
         const username_check = yield Users_1.default.findOne({ username: username });
         if (username_check) {
-            return res.status(411).json({
-                ok: false,
+            return res.status(400).json({
                 message: "Username Already taken..."
             });
         }
-        const hashed_password = yield bcryptjs_1.default.hash(password, 20);
+        const hashed_password = yield bcryptjs_1.default.hash(password, 10);
         yield Users_1.default.create({
             email: email,
             username: username,

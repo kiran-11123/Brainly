@@ -1,4 +1,4 @@
-import express, { urlencoded } from 'express'
+import express from 'express'
 import ConnectDB from './db';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'
@@ -7,7 +7,6 @@ import Auth_Router from './routes/Authentication_routes';
 const app = express();
 ConnectDB();
 app.use(express.json());
-app.use(urlencoded({extended:true}));
 app.use(cookieParser());
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -21,6 +20,6 @@ app.use("/api/v1/data" , Contents_Router);
 
 
 
-app.listen(3000,()=>{
+app.listen(5000,()=>{
     console.log("Server is running")
 })
